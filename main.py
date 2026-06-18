@@ -30,7 +30,7 @@ def sign(key, message: str) -> str:
 
 
 def build_auth_header(method: str, host: str, path: str, body: str = "") -> dict:
-    now = datetime.datetime.now(datetime.UTC).strftime("%a, %d %b %Y %H:%M:%S GMT")
+    now = datetime.datetime.now(datetime.timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
 
     body_bytes = body.encode("utf-8")
     body_hash = base64.b64encode(hashlib.sha256(body_bytes).digest()).decode("utf-8")
@@ -67,7 +67,7 @@ def build_auth_header(method: str, host: str, path: str, body: str = "") -> dict
 
 def build_get_auth_header(method: str, host: str, path: str) -> dict:
     """Build auth header for GET requests (no body)."""
-    now = datetime.datetime.now(datetime.UTC).strftime("%a, %d %b %Y %H:%M:%S GMT")
+    now = datetime.datetime.now(datetime.timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
 
     signing_string = (
         f"date: {now}\n"
@@ -106,7 +106,7 @@ def send_telegram(message: str):
 
 def get_usage_costs() -> float:
     """Query daily usage costs for the current month."""
-    now = datetime.datetime.now(datetime.UTC)
+    now = datetime.datetime.now(datetime.timezone.utc)
     start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
     end = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
@@ -161,7 +161,7 @@ def get_invoice_costs() -> float:
 
 
 def main():
-    now_str = datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%d %H:%M UTC")
+    now_str = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     print(f"Checking OCI billing — {now_str}\n")
 
     usage_total = 0.0
